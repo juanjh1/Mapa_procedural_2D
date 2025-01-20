@@ -21,21 +21,21 @@ Puedes instalar las dependencias usando pip:
 
 
 ```sh
-pip install pygame perlin-noise
+    pip install pygame perlin-noise
 ```
 
 ## Instalación
 Clona este repositorio a tu máquina local:
 
 ```sh
-https://github.com/juanjh1/Mapa_procedural_2D.git
+    https://github.com/juanjh1/Mapa_procedural_2D.git
 ```
 Instala las dependencias requeridas
 
 Ejecuta el archivo principal para iniciar el generador de mapas:
 
 ```sh
-python run.py
+     python run.py
 ```
 
 ## Uso
@@ -44,11 +44,11 @@ python run.py
 - El mapa está compuesto por biomas representados por diferentes texturas.
 # Estructura del Proyecto
 
-| Archivo                       | funcionalidad                                                     |    
-| ------                        | ------                                                            |
-| run.py                        |  El archivo principal donde se ejecuta el generador de mapas.     |
-| biomas.py                     | Contiene las clases y datos relacionados con los biomas.          |
-| player.py                     | Gestiona la lógica y el control del jugador.                      |
-| perlin_noise.py               | Biblioteca utilizada para generar el ruido Perlin.                |
+| Archivo                       |                           funcionalidad                           |    
+| ------                        |                               ------                              |
+| run.py                        |     El archivo principal donde se ejecuta el generador de mapas.  |
+| biomas.py                     |     Contiene las clases y datos relacionados con los biomas.      |
+| player.py                     |     Gestiona la lógica y el control del jugador.                  |
+| perlin_noise.py               |     Biblioteca utilizada para generar el ruido Perlin.            |
 
 

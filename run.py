@@ -7,43 +7,44 @@ from perlin_noise import PerlinNoise
 pygame.init()
 WIDTH = 700
 HEIGTH = 600
-RUIDO = random.uniform(0, 100)
-OCTAVAS = 8
+RUIDO = random.uniform(0, 1000)
+OCTAVAS = 1
 pixel_dimension = 10
 
 noise = PerlinNoise(octaves=OCTAVAS, seed=RUIDO) 
 
-def selector_bioma(ruido) -> tuple:
-    
+def bioma_selector(ruido) -> tuple:
+    normalized_noise_value = (ruido + .60) / 2  
+    normalized_noise_value2 = (ruido + 1) / 2  
     def select_bioma() -> biomas.Bioma:
-        if ruido < 0.2:
-            return biomas.Bioma.TIERRA
-          
-        elif ruido < 0.4:
-            return biomas.Bioma.BOSQUE
-        elif ruido < 0.6:
-            return biomas.Bioma.MONTANA
+        if normalized_noise_value < 0.2:
+            return biomas.Bioma.AGUA 
+        elif  normalized_noise_value < 0.4:      
+           return biomas.Bioma.BOSQUE
+        elif  normalized_noise_value < 0.6:
+            return biomas.Bioma.TIERRA  
              
-           
-        return biomas.Bioma.AGUA 
+             
+        return biomas.Bioma.MONTANA
+      
         
     
-    def select_pixel_bioma(noise_value, bioma) -> tuple:
+    def select_pixel_bioma(bioma) -> tuple:
       
         texturas = biomas.bioma_data[bioma]['texturas']
-        normalized_noise_value = (noise_value + 1) / 2         
-        index = int(normalized_noise_value * (len(texturas) - 1)) 
+            
+        index = int(normalized_noise_value2 * (len(texturas) - 1)) 
         eleccion = texturas[index] 
         
         return eleccion.value  
 
     
-    return select_pixel_bioma(ruido ,select_bioma())
+    return select_pixel_bioma(select_bioma())
 
 
 
-def map_intit (widt, heigth, dimension) -> list :    
-     return [[selector_bioma(noise([row/ HEIGTH, col / WIDTH])) for col in range(0, widt, dimension)] for row in  range(0, heigth, dimension)]
+def initialize_map (widt, heigth, dimension) -> list :    
+     return [[bioma_selector(noise([row/ (HEIGTH* 0.18), col / (WIDTH* 0.18)])) for col in range(0, widt, dimension)] for row in  range(0, heigth, dimension)]
 
  
 
@@ -51,16 +52,16 @@ def map_intit (widt, heigth, dimension) -> list :
 
 screen = pygame.display.set_mode((WIDTH, HEIGTH))
 pygame.display.set_caption("Generador de Mapas Procedurales")
-matrix = map_intit(WIDTH, HEIGTH, pixel_dimension)
+matrix = initialize_map(WIDTH, HEIGTH, pixel_dimension)
 
 player  = player.Player(WIDTH, HEIGTH, pixel_dimension)
 
 matrix = player.set_player_matrix(matrix)
-
+ 
 
 
 def draw_grid() -> None:
-   
+    
     for y in range(0, HEIGTH,pixel_dimension ):
            pygame.draw.line(screen, (0,0, 0), (0, y), ( WIDTH, y))
     for x in range(0, WIDTH,pixel_dimension ):
@@ -79,15 +80,15 @@ running = True
 while running:
     screen.fill((0, 0, 0))
    
-    draw_grid()         
+           
     draw_rects()
-    
+    draw_grid() 
     pygame.display.flip()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        elif event.type == pygame.KEYDOWN  :
+        elif event.type == pygame.KEYDOWN:
           if event.key == pygame.K_UP:
                 matrix = player.arriba( matrix)
           elif event.key == pygame.K_DOWN:

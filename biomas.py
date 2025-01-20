@@ -18,7 +18,7 @@ class TexturaTierra(Enum):
     DEFAULT =  (139, 69, 19)
     ARENACLARA = (255, 228, 181)
     TIERRAHUMERA = (160, 82, 45)
-    CESPED = (60, 179, 113)
+    CESPED = (60, 139, 113)
 
 
 
