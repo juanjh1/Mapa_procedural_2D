@@ -9,13 +9,12 @@ WIDTH = 700
 HEIGTH = 600
 RUIDO = random.uniform(0, 1000)
 OCTAVAS = 1
-pixel_dimension = 10
+pixel_dimension = 4
 
 noise = PerlinNoise(octaves=OCTAVAS, seed=RUIDO) 
 
 def bioma_selector(ruido) -> tuple:
-    normalized_noise_value = (ruido + .60) / 2  
-    normalized_noise_value2 = (ruido + 1) / 2  
+    normalized_noise_value = (ruido + .60) / 2   
     def select_bioma() -> biomas.Bioma:
         if normalized_noise_value < 0.2:
             return biomas.Bioma.AGUA 
@@ -32,8 +31,36 @@ def bioma_selector(ruido) -> tuple:
     def select_pixel_bioma(bioma) -> tuple:
       
         texturas = biomas.bioma_data[bioma]['texturas']
-            
-        index = int(normalized_noise_value2 * (len(texturas) - 1)) 
+        if bioma == biomas.Bioma.AGUA :
+          if normalized_noise_value < 0.1:
+                index = 0
+          elif  normalized_noise_value < 0.15:
+                index = 1
+          else:
+                index = 2  
+        elif bioma == biomas.Bioma.BOSQUE:
+            if normalized_noise_value < 0.25:
+                index = 0
+            elif  normalized_noise_value < 0.3:
+                index = 1
+            elif  normalized_noise_value < 0.35:
+                index = 2
+            else:
+                index = 3 
+        elif bioma == biomas.Bioma.TIERRA:
+            if normalized_noise_value < 0.42:
+                index = 3 
+    
+            elif  normalized_noise_value < 0.45:
+                index = 2
+  
+            elif  normalized_noise_value < 0.5:
+                 index = 1
+            else:
+                index = 0
+                      
+        elif bioma == biomas.Bioma.MONTANA:
+             index = 1
         eleccion = texturas[index] 
         
         return eleccion.value  
@@ -80,9 +107,9 @@ running = True
 while running:
     screen.fill((0, 0, 0))
    
-           
+    draw_grid()        
     draw_rects()
-    draw_grid() 
+    
     pygame.display.flip()
 
     for event in pygame.event.get():
